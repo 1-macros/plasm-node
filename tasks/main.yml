@@ -1,0 +1,9 @@
+- hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: "Init dependencies"
+      include_tasks: init.yml
+
+    - name: "Download & Set plasm node"
+      include_tasks: plasm.yml

@@ -1,0 +1,8 @@
+- name: download binary
+  get_url:
+    url: "{{ plasm.url }}"
+    dest: "{{home}}/plasm"
+
+- name: run plasm-node
+  shell: nohup ./plasm-node </dev/null >/dev/null 2>&1 &
+  chdir: "{{ home }}/plasm"
