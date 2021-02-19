@@ -1,8 +1,31 @@
-- name: download binary
+---
+#- name: "download binary"
+#  ansible.builtin.command: 
+#    cmd: "wget https://github.com/staketechnologies/Plasm/releases/download/v1.7.0-dusty/plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
+#    creates: "/root/plasm"
+- name: "create dir"
+  command: "mkdir -p /root/plasm"
+- name: "download"
   get_url:
-    url: "{{ plasm.url }}"
-    dest: "{{home}}/plasm"
-
-- name: run plasm-node
-  shell: nohup ./plasm-node </dev/null >/dev/null 2>&1 &
-  chdir: "{{ home }}/plasm"
+    url: "https://github.com/staketechnologies/Plasm/releases/download/v1.7.0-dusty/plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
+    dest: "/root/plasm"
+    force: false
+- name: "unzip tar"
+  command: "tar -xf plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
+  args:
+    chdir: "/root/plasm"
+#- name: "run plasm-node"
+#  command: "./plasm-node --validator --name x1 --rpc-cors all"
+#  args:
+#    chdir: "/root/plasm"
+- name: "copy conf file"
+  template:
+    src: plasm-node.service
+    dest: /etc/systemd/system
+  notify:
+    - Start plasm-node
+- name: "Enable & Start plasm-node service"
+  systemd:
+    name: "plasm-node"
+    state: restarted
+    enabled: yes

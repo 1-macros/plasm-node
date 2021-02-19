@@ -1,0 +1,8 @@
+[Unit]
+Description=plasm-node
+
+[Service]
+ExecStart=/root/plasm/plasm-node --validator --name x02 --rpc-cors all
+
+[Install]
+WantedBy=multi-user.target
