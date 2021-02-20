@@ -1,0 +1,49 @@
+---
+- name: "include var"
+  include_vars: ../defaults/main.yml
+
+- name: "Install dependencies"
+  apt:
+    name:
+      - libssl-dev
+      - nginx
+
+- name: "Enable nginx"
+  systemd:
+    name: nginx
+    enabled: yes
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "{{ CERT_LOCATION_KEY }}"
+    size: "{{ key_size }}"
+    type: "RSA"
+    backup: yes
+
+- name: Generate an OpenSSL Certificate Signing Request with Subject information"
+  openssl_csr:
+    path: "CERT_LOCATION_CSR"
+    privatekey_path: "{{ CERT_LOCATION_KEY }}"
+    country_name: "{{ country_name }}"
+    organization_name: "{{ organization_name }}"
+    email_address: "{{ email_address }}"
+    common_name: "{{ server_hostname }}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ CERT_LOCATION }}"
+    privatekey_path: "{{ CERT_LOCATION_KEY }}"
+    csr_path: "CERT_LOCATION_CSR"
+    provider: selfsigned
+
+- name: "Encrypt self signed cert"
+  command: "openssl dhparam -out {{ CERT_DHPARAM }} 2048"
+
+- name: "nginx config"
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+#TBD: move to handlers.
+- name: "nginx restart"
+  command: "service nginx restart"

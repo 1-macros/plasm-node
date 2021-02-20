@@ -7,3 +7,6 @@
 
     - name: "Download & Set plasm node"
       include_tasks: plasm.yml
+
+    - name: "Set Nginx & Configure SSL certs for WebSocket connections"
+      include_tasks: ws.yml
