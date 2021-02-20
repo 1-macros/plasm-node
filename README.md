@@ -9,10 +9,10 @@ sudo apt install ansible git -y
 git clone https://github.com/1-macros/plasm-node.git
 ```
 
-Run the ansible-playbook
+Run the ansible-playbook, replace the node_name accordingly.
 
 ```sh
-ansible-playbook plasm-node/tasks/main.yml -vvv
+ansible-playbook plasm-node/tasks/main.yml --extra-vars "node_name=your_node_name" -vvv
 ```
 
 Track the node status
@@ -24,5 +24,5 @@ supervisorctl status
 Tail the logs
 
 ```
-tail -f /var/log/plasm-node.*.out
+tail -f /var/log/plasm-node.out.log
 ```
