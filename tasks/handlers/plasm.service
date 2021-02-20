@@ -1,5 +1,0 @@
-- name: Start plasm-node
-  systemd:
-    name: plasm-node
-    state: restarted
-    enabled: yes

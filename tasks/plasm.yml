@@ -1,6 +1,6 @@
 ---
 #- name: "download binary"
-#  ansible.builtin.command: 
+#  ansible.builtin.command:
 #    cmd: "wget https://github.com/staketechnologies/Plasm/releases/download/v1.7.0-dusty/plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
 #    creates: "/root/plasm"
 - name: "create dir"
@@ -10,22 +10,39 @@
     url: "https://github.com/staketechnologies/Plasm/releases/download/v1.7.0-dusty/plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
     dest: "/root/plasm"
     force: false
+
 - name: "unzip tar"
   command: "tar -xf plasm-node-ubuntu-1.7.0-x86_64.tar.xz"
   args:
     chdir: "/root/plasm"
+- name: "start supervisor"
+  command: "service supervisor start"
+
+- name: "supervisor config"
+  template:
+    src: plasm.conf
+    dest: /etc/supervisor/conf.d/plasm.conf
+
+- name: "reread supervisor config"
+  command: "supervisorctl reread"
+
+- name: "update the supervisor config"
+  command: "supervisorctl update"
+
+- name: "start plasm node"
+  command: "supervisorctl start all"
 #- name: "run plasm-node"
-#  command: "./plasm-node --validator --name x1 --rpc-cors all"
+#  command: "./plasm-node --validator --name x1 --rpc-cors all &"
 #  args:
 #    chdir: "/root/plasm"
-- name: "copy conf file"
-  template:
-    src: plasm-node.service
-    dest: /etc/systemd/system
-  notify:
-    - Start plasm-node
-- name: "Enable & Start plasm-node service"
-  systemd:
-    name: "plasm-node"
-    state: restarted
-    enabled: yes
+#- name: "copy conf file"
+#  template:
+#    src: plasm-node.service
+#    dest: /etc/systemd/system
+#  notify:
+#    - Start plasm-node
+#- name: "Enable & Start plasm-node service"
+#  systemd:
+#    name: "plasm-node"
+#    state: restarted
+#    enabled: yes
