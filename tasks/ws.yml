@@ -1,0 +1,38 @@
+- name: "Set dummy variables for cert generation"
+  set_fact:
+    server_hostname: self
+    key_size: 2048
+    passphrase:
+    key_type: RSA
+    country_name: SE
+    email_address: self@self.com
+    organization_name: self
+
+- name: "Set cert location variables"
+  set_fact:
+    SERVER_ADDRESS: "{{ansible_default_ipv4.address}}"
+    CERT_LOCATION: /etc/ssl/certs/nginx-selfsigned.crt
+    CERT_LOCATION_KEY: /etc/ssl/private/nginx-selfsigned.key
+    CERT_DHPARAM: /etc/ssl/certs/dhparam.pem
+    cacheable: yes
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "{{ CERT_LOCATION_KEY }}"
+    size: "{{ key_size }}"
+    type: "{{ key_type }}"
+    backup: yes
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ CERT_LOCATION }}"
+    privatekey_path: "{{ CERT_LOCATION_KEY }}"
+    provider: selfsigned
+
+- name: "Encrypt self signed cert"
+  command: "openssl dhparam -out {{ CERT_DHPARAM }} 2048"
+
+- name: "nginx config"
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
