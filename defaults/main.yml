@@ -1,4 +1,5 @@
 ---
 home_dir: /root
 src: src
-node: 1-macros
+# Either override name here, or pass dynamically.
+node_name: test
