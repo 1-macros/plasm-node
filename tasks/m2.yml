@@ -1,6 +1,0 @@
-- hosts: localhost
-  connection: local
-  become: yes
-  tasks:
-    - name: "Set Nginx & Configure SSL certs for WebSocket connections"
-      include_tasks: ws.yml

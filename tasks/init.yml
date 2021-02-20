@@ -13,6 +13,4 @@
       - wget
       - xz-utils
       - supervisor
-      - libssl-dev
-      - nginx
     state: present

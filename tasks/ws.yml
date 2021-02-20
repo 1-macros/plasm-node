@@ -8,6 +8,11 @@
       - libssl-dev
       - nginx
 
+- name: "Enable nginx"
+  systemd:
+    name: nginx
+    enabled: yes
+
 - name: Generate an OpenSSL private key
   openssl_privatekey:
     path: "{{ CERT_LOCATION_KEY }}"
@@ -40,5 +45,5 @@
     dest: /etc/nginx/nginx.conf
 
 #TBD: move to handlers.
-- name: "nginx reload"
+- name: "nginx restart"
   command: "service nginx restart"
