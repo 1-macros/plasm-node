@@ -14,3 +14,15 @@ Run the ansible-playbook
 ```sh
 ansible-playbook plasm-node/tasks/main.yml -vvv
 ```
+
+Track the node status
+
+```sh
+supervisorctl status
+```
+
+Tail the logs
+
+```
+tail -f /var/log/plasm-node.*.out
+```
