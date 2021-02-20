@@ -1,3 +1,4 @@
 ---
-home: "/root"
-name: "1-macros"
+home_dir: /root
+src: src
+node: 1-macros
