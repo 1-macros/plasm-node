@@ -1,6 +1,7 @@
 ---
 - name: "include var"
   include_vars: ../defaults/main.yml
+
 - name: "create dir"
   command: "mkdir -p {{home_dir}}/{{src}}"
 
