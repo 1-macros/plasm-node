@@ -3,3 +3,17 @@ home_dir: /root
 src: src
 # Either override name here, or pass dynamically.
 node_name: test
+
+# dummy vars for self signed cert generation.
+server_hostname: self
+key_size: 2048
+key_type: RSA
+country_name: SE
+email_address: self@self.com
+organization_name: self
+
+#SERVER_ADDRESS: "{{ansible_default_ipv4.address}}"
+CERT_LOCATION: /etc/ssl/certs/nginx-selfsigned.crt
+CERT_LOCATION_KEY: /etc/ssl/private/nginx-selfsigned.key
+CERT_DHPARAM: /etc/ssl/certs/dhparam.pem
+CERT_LOCATION_CSR: /etc/ssl/private/nginx-selfsigned.csr
